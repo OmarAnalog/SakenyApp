@@ -52,13 +52,31 @@ namespace SakennyProject.Controllers.Mobile
             }
             var post = await postRepository.GetByIdAsync(like.PostId);
             post.LikesCount++;
-            await postRepository.Update(post);
-            NotificationToReturnDto model =
-                new() { ContentId = post.Id, Name = user.FirstName + " " + user.LastName
-                ,notificationType=NotificationType.Like
-                ,To=post.UserId,Picture=user.Picture,UserId=userId};
-            await notificationService.SendNotifcation(model);
-            return Ok("Like added successfully");
+            if (await postRepository.Update(post) != 0)
+            {
+                NotificationToReturnDto model =
+                    new()
+                    {
+                        ContentId = post.Id,
+                        Name = user.FirstName + " " + user.LastName
+                    ,
+                        notificationType = NotificationType.Like
+                    ,
+                        To = post.UserId,
+                        Picture = user.Picture,
+                        UserId = userId
+                    };
+                try
+                {
+                    await notificationService.SendNotifcation(model);
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine($"Error sending notification: {ex.Message}");
+                }
+                return Ok("Like added successfully");
+            }
+            return BadRequest("Failed to add like to post");
         }
         [HttpDelete("remove-like")]
         public async Task<ActionResult> RemoveLike(AddLikeDto like)
@@ -71,8 +89,9 @@ namespace SakennyProject.Controllers.Mobile
             }
             var post = await postRepository.GetByIdAsync(like.PostId);
             post.LikesCount--;
-            await postRepository.Update(post);
-            return Ok("Like removed successfully");
+            if (await postRepository.Update(post)!=0)
+                return Ok("Like removed successfully");
+            return BadRequest("Failed to remove Like to post");
         }
     }
 }

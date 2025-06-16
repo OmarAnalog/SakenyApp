@@ -84,7 +84,7 @@ namespace SakennyProject.Controllers.Mobile
             return Ok(returnedUser);
         }
         [HttpPost("GoogleLogin")]
-        public async Task<ActionResult<ReturnedDTO>> GoogleLogin(string googleToken)
+        public async Task<ActionResult<ReturnedDTO>> GoogleLogin(string googleToken,bool rememberMe)
         {
             var payload = await GoogleJsonWebSignature.ValidateAsync(googleToken);
             if (payload is null) return Unauthorized("Invalid Token");
@@ -103,7 +103,7 @@ namespace SakennyProject.Controllers.Mobile
                 if (!result.Succeeded) return BadRequest(result.Errors);
             }
             user.RefreshToken = tokenService.GenerateRefreshToken();
-            user.RefreshTokenExpiry = DateTime.UtcNow.AddDays(7);
+            user.RefreshTokenExpiry = rememberMe ? DateTime.UtcNow.AddDays(30) : DateTime.UtcNow.AddDays(1);
             await signInManager.SignInAsync(user, false);
             if (user.VerifiedAt is null)
                 user.VerifiedAt = DateTime.UtcNow;

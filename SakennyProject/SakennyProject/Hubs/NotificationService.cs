@@ -52,10 +52,10 @@ namespace Sakenny.Services
                     ContentId = notification.ContentId,
                     Date = DateTime.UtcNow,
                 };
-            sakennyDb.Notifications.Add(rt);
-            sakennyDb.SaveChanges();
-               var res=await fcm.Send(notification); 
-               return res;
+            await sakennyDb.Notifications.AddAsync(rt);
+            await sakennyDb.SaveChangesAsync();
+            var res=await fcm.Send(notification); 
+            return res;
             
         }
     }

@@ -65,7 +65,14 @@ namespace SakennyProject.Controllers.Mobile
                 ,Picture = user.Picture
                 ,UserId = userId
                 };
-            await notificationService.SendNotifcation(notification);
+            try
+            {
+                await notificationService.SendNotifcation(notification);
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Error sending notification: {ex.Message}");
+            }
             return Ok("Comment added successfully");
         }
         [HttpDelete("delete-comment/{id}")]
