@@ -58,6 +58,7 @@ namespace Sakenny.Repository
         {
             var query = sakennyDb.Posts
                 .Include(p => p.Unit)
+                .ThenInclude(u=>u.PicutresUrl)
                 .Include(p => p.User)
                 .Where(p => !p.ISDeleted)
                 .Where(p => EF.Functions.Like(p.Unit.Title, $"%{model.SearchTerm}%") ||
