@@ -11,7 +11,8 @@ namespace Sakenny.Repository
             try
             {
                 var Query = inputQuery;
-                Query = Query.OrderByDescending(u => u.Id);
+                if (specification.IsDesc)
+                    Query = Query.OrderByDescending(u => u.Id);
                 if (specification.Criteria is not null)
                 {
                     Query = Query.Where(specification.Criteria);

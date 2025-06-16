@@ -10,6 +10,8 @@ namespace Sakenny.Core.Specification
         public int Take { get; set; }
         public int Skip { get; set; }
         public bool IsPagination { get; set; } = false;
+        public bool IsDesc { get; set; } = true;
+
         public BaseSpecification()
         {
 
@@ -23,6 +25,10 @@ namespace Sakenny.Core.Specification
             Take = take;
             Skip = skip;
             IsPagination = true;
+        }
+        public void setAsc()
+        {
+            IsDesc = false;
         }
     }
 }

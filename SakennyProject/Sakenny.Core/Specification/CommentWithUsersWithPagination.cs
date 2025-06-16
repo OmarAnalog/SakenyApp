@@ -9,6 +9,7 @@ namespace Sakenny.Core.Specification
         {
             Includes.Add(p => p.User);
             ApplyPagination((specParams.PageIndex - 1) * specParams.PageSize, specParams.PageSize);
+            setAsc();
         }
     }
 }

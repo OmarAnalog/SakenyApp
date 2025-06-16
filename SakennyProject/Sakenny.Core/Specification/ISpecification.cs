@@ -10,5 +10,6 @@ namespace Sakenny.Core.Specification
         public int Take { get; set; }
         public int Skip { get; set; }
         public bool IsPagination { get; set; }
+        public bool IsDesc { get; set; }
     }
 }

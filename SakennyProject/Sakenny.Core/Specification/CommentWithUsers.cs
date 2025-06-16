@@ -7,6 +7,7 @@ namespace Sakenny.Core.Specification
     {
         public CommentWithUsers(CommentSpectParams specParams) : base(p => p.PostId == specParams.PostId)
         {
+            setAsc();
         }
     }
 }

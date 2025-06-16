@@ -56,9 +56,16 @@ namespace Sakenny.Repository
 
         public async Task<int> Update(T entity)
         {
-            var updateEntity = dbContext.Set<T>().Update(entity);
-            var rows = await dbContext.SaveChangesAsync();
-            return rows;
+            try
+            {
+                var updateEntity = dbContext.Set<T>().Update(entity);
+                var rows = await dbContext.SaveChangesAsync();
+                return rows;
+            }
+            catch (Exception ex)
+            {
+                return 0;
+            }
         }
 
         public async Task<int> Delete(T entity)
